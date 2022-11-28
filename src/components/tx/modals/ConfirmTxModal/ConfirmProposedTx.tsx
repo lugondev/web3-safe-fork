@@ -39,7 +39,7 @@ const ConfirmProposedTx = ({ txSummary, onSubmit }: ConfirmProposedTxProps): Rea
     <SignOrExecuteForm
       safeTx={safeTx}
       txId={txId}
-      onSubmit={onSubmit}
+      onSubmit={onSubmit as any}
       isExecutable={canExecute}
       onlyExecute={!canSign}
       error={safeTxError}

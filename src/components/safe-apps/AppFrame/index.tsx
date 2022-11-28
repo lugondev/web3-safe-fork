@@ -1,6 +1,5 @@
 import type { ReactElement } from 'react'
-import { useMemo } from 'react'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { CircularProgress, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
@@ -20,7 +19,6 @@ import { useSafePermissions } from '@/hooks/safe-apps/permissions'
 import useIsGranted from '@/hooks/useIsGranted'
 import { useCurrentChain } from '@/hooks/useChains'
 import { isSameUrl } from '@/utils/url'
-import { isMultisigDetailedExecutionInfo } from '@/utils/transaction-guards'
 import useTransactionQueueBarState from '@/components/safe-apps/AppFrame/useTransactionQueueBarState'
 import { gtmTrackPageview } from '@/services/analytics/gtm'
 import { getLegacyChainName } from '../utils'
@@ -69,6 +67,19 @@ const AppFrame = ({ appUrl, allowedFeaturesList }: AppFrameProps): ReactElement 
   const { getPermissions, hasPermission, permissionsRequest, setPermissionsRequest, confirmPermissionRequest } =
     useSafePermissions()
   const appName = useMemo(() => (remoteApp ? remoteApp.name : appUrl), [appUrl, remoteApp])
+  useEffect(() => {
+    console.log({
+      allowedFeaturesList,
+      appName,
+      chainId,
+      safe,
+      safeLoaded,
+      safeAddress,
+      safeAppFromManifest,
+      chain,
+      remoteApp,
+    })
+  }, [allowedFeaturesList, appName, chainId, safe, safeLoaded, safeAddress, safeAppFromManifest, chain, remoteApp])
   const communicator = useAppCommunicator(iframeRef, remoteApp || safeAppFromManifest, chain, {
     onConfirmTransactions: openTxModal,
     onSignMessage: openSignMessageModal,
@@ -99,6 +110,7 @@ const AppFrame = ({ appUrl, allowedFeaturesList }: AppFrameProps): ReactElement 
         trusted: false,
       }),
     onGetChainInfo: () => {
+      console.log('onGetChainInfo')
       if (!chain) return
 
       const { nativeCurrency, chainName, chainId, shortName, blockExplorerUriTemplate } = chain
@@ -141,22 +153,21 @@ const AppFrame = ({ appUrl, allowedFeaturesList }: AppFrameProps): ReactElement 
   }, [appIsLoading, appName])
 
   useEffect(() => {
-    const unsubscribe = txSubscribe(TxEvent.SAFE_APPS_REQUEST, async ({ txId, safeAppRequestId }) => {
+    return txSubscribe(TxEvent.SAFE_APPS_REQUEST, async ({ txId, safeAppRequestId, txHash }) => {
       const currentSafeAppRequestId = signMessageModalState.requestId || txModalState.requestId
-
+      console.log({ currentSafeAppRequestId, safeAppRequestId, txId })
       if (txId && currentSafeAppRequestId === safeAppRequestId) {
-        const { detailedExecutionInfo } = await getTransactionDetails(chainId, txId)
+        // const { detailedExecutionInfo } = await getTransactionDetails(chainId, txId)
 
-        if (isMultisigDetailedExecutionInfo(detailedExecutionInfo)) {
-          trackSafeAppEvent(SAFE_APPS_EVENTS.TRANSACTION_CONFIRMED, appName)
-          communicator?.send({ safeTxHash: detailedExecutionInfo.safeTxHash }, safeAppRequestId)
-        }
+        // if (isMultisigDetailedExecutionInfo(detailedExecutionInfo)) {
+        //   trackSafeAppEvent(SAFE_APPS_EVENTS.TRANSACTION_CONFIRMED, appName)
+        //   communicator?.send({ safeTxHash: detailedExecutionInfo.safeTxHash }, safeAppRequestId)
+        // }
+        communicator?.send({ safeTxHash: txHash }, safeAppRequestId)
 
         txModalState.isOpen ? closeTxModal() : closeSignMessageModal()
       }
     })
-
-    return unsubscribe
   }, [appName, chainId, closeSignMessageModal, closeTxModal, communicator, signMessageModalState, txModalState])
 
   const onSafeAppsModalClose = () => {

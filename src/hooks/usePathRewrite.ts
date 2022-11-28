@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { AppRoutes } from '@/config/routes'
+// import { AppRoutes } from '@/config/routes'
 import { trackError } from '@/services/exceptions'
 import ErrorCodes from '@/services/exceptions/ErrorCodes'
 import { useUrlChainId } from '@/hooks/useChainId'
@@ -24,8 +24,8 @@ const usePathRewrite = () => {
 
     if (!chainId) {
       trackError(ErrorCodes._104)
-      router.push(AppRoutes.welcome)
-      return
+      // router.push(AppRoutes.welcome)
+      // return
     }
 
     // Move the Safe address to the path

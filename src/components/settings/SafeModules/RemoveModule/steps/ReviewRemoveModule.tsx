@@ -33,7 +33,7 @@ export const ReviewRemoveModule = ({
   }
 
   return (
-    <SignOrExecuteForm safeTx={safeTx} onSubmit={onFormSubmit} error={safeTxError}>
+    <SignOrExecuteForm safeTx={safeTx} onSubmit={onFormSubmit as any} error={safeTxError}>
       <Typography sx={({ palette }) => ({ color: palette.primary.light })}>Module</Typography>
       <EthHashInfo address={data.address} showCopyButton hasExplorer shortAddress={false} />
       <Typography my={2}>

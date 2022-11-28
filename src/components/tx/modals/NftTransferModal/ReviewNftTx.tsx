@@ -26,7 +26,7 @@ const ReviewNftTx = ({ params, onSubmit }: ReviewNftTxProps): ReactElement => {
   }, [safeAddress, params])
 
   return (
-    <SignOrExecuteForm safeTx={safeTx} onSubmit={onSubmit} error={safeTxError}>
+    <SignOrExecuteForm safeTx={safeTx} onSubmit={onSubmit as any} error={safeTxError}>
       <Box display="flex" flexDirection="column" alignItems="center">
         <ImageFallback
           src={token.imageUri || token.logoUri}

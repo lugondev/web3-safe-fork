@@ -91,6 +91,7 @@ const fetchSafeAppFromManifest = async (
 ): Promise<SafeAppDataWithPermissions> => {
   const normalizedAppUrl = trimTrailingSlash(appUrl)
   const appManifest = await fetchAppManifest(appUrl)
+  console.log({ appManifest })
 
   if (!isAppManifestValid(appManifest)) {
     throw new Error('Invalid app manifest')
@@ -107,7 +108,7 @@ const fetchSafeAppFromManifest = async (
     tags: [],
     chainIds: [currentChainId],
     iconUrl,
-    safeAppsPermissions: appManifest.safe_apps_permissions || [],
+    safeAppsPermissions: [],
   }
 }
 

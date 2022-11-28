@@ -37,7 +37,7 @@ export const ReviewRemoveOwnerTxStep = ({
   }
 
   return (
-    <SignOrExecuteForm safeTx={safeTx} onSubmit={onFormSubmit} error={safeTxError}>
+    <SignOrExecuteForm safeTx={safeTx} onSubmit={onFormSubmit as any} error={safeTxError}>
       <Grid
         container
         mt={-3}

@@ -111,7 +111,7 @@ const ChangeThresholdStep = ({ data, onSubmit }: { data: ChangeThresholdData; on
       <Box mt={-5}>
         <SignOrExecuteForm
           safeTx={safeTx}
-          onSubmit={onChangeTheshold}
+          onSubmit={onChangeTheshold as any}
           error={safeTxError}
           disableSubmit={isSameThreshold}
         />

@@ -50,7 +50,7 @@ export const RemoveSpendingLimit = ({
   }
 
   return (
-    <SignOrExecuteForm safeTx={safeTx} onSubmit={onFormSubmit} error={safeTxError}>
+    <SignOrExecuteForm safeTx={safeTx} onSubmit={onFormSubmit as any} error={safeTxError}>
       {token && (
         <TokenTransferReview
           amount={safeFormatUnits(data.amount, token.tokenInfo.decimals)}

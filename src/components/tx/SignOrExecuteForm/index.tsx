@@ -3,7 +3,7 @@ import { Button, DialogContent, Typography } from '@mui/material'
 import type { SafeTransaction } from '@gnosis.pm/safe-core-sdk-types'
 
 import {
-  dispatchTxExecution,
+  // dispatchTxExecution,
   dispatchTxProposal,
   dispatchTxSigning,
   createTx,
@@ -20,19 +20,19 @@ import ExecuteCheckbox from '../ExecuteCheckbox'
 import { logError, Errors } from '@/services/exceptions'
 import { type ConnectedWallet } from '@/hooks/wallets/useOnboard'
 import { useCurrentChain } from '@/hooks/useChains'
-import { getTxOptions } from '@/utils/transactions'
+// import { getTxOptions } from '@/utils/transactions'
 import { TxSimulation } from '@/components/tx/TxSimulation'
 import { useWeb3 } from '@/hooks/wallets/web3'
 import type { Web3Provider } from '@ethersproject/providers'
 import useIsWrongChain from '@/hooks/useIsWrongChain'
-import useIsSafeOwner from '@/hooks/useIsSafeOwner'
+// import useIsSafeOwner from '@/hooks/useIsSafeOwner'
 import { sameString } from '@gnosis.pm/safe-core-sdk/dist/src/utils'
 import useIsValidExecution from '@/hooks/useIsValidExecution'
 
 type SignOrExecuteProps = {
   safeTx?: SafeTransaction
   txId?: string
-  onSubmit: (txId: string) => void
+  onSubmit: (txId: SafeTransaction | undefined) => void
   children?: ReactNode
   error?: Error
   isExecutable?: boolean
@@ -65,7 +65,7 @@ const SignOrExecuteForm = ({
   const { safe, safeAddress } = useSafeInfo()
   const wallet = useWallet()
   const isWrongChain = useIsWrongChain()
-  const isOwner = useIsSafeOwner()
+  // const isOwner = useIsSafeOwner()
   const provider = useWeb3()
   const currentChain = useCurrentChain()
 
@@ -73,6 +73,9 @@ const SignOrExecuteForm = ({
   const isNewExecutableTx = !txId && safe.threshold === 1
   const isCorrectNonce = tx?.data.nonce === safe.nonce
   const canExecute = isCorrectNonce && (isExecutable || isNewExecutableTx)
+  useEffect(() => {
+    console.log({ isNewExecutableTx, isCorrectNonce, isExecutable, canExecute, txId, safe })
+  }, [isNewExecutableTx, isCorrectNonce, isExecutable, canExecute, txId])
 
   // If checkbox is checked and the transaction is executable, execute it, otherwise sign it
   const willExecute = shouldExecute && canExecute
@@ -139,16 +142,17 @@ const SignOrExecuteForm = ({
   }
 
   // Execute transaction
-  const onExecute = async (): Promise<string> => {
-    const [, createdTx, provider] = assertDependencies()
+  const onExecute = async (): Promise<SafeTransaction | undefined> => {
+    // const [, createdTx, provider] = assertDependencies()
+    //
+    // // If no txId was provided, it's an immediate execution of a new tx
+    // const id = txId || (await proposeTx(createdTx))
+    // const txOptions = getTxOptions(advancedParams, currentChain)
+    //
+    // await dispatchTxExecution(createdTx, provider, txOptions, id)
+    console.log('onExecute', tx)
 
-    // If no txId was provided, it's an immediate execution of a new tx
-    const id = txId || (await proposeTx(createdTx))
-    const txOptions = getTxOptions(advancedParams, currentChain)
-
-    await dispatchTxExecution(createdTx, provider, txOptions, id)
-
-    return id
+    return Promise.resolve(tx)
   }
 
   // On modal submit
@@ -157,9 +161,11 @@ const SignOrExecuteForm = ({
     setIsSubmittable(false)
     setSubmitError(undefined)
 
-    let id: string
+    console.log({ willExecute })
+    let id: SafeTransaction | undefined
     try {
-      id = await (willExecute ? onExecute() : onSign())
+      // id = await (willExecute ? onExecute() : onSign())
+      id = await onExecute()
     } catch (err) {
       logError(Errors._804, (err as Error).message)
       setIsSubmittable(true)
@@ -186,7 +192,7 @@ const SignOrExecuteForm = ({
   }
 
   const isExecutionLoop = wallet ? sameString(wallet.address, safeAddress) : false // Can't execute own transaction
-  const cannotPropose = !isOwner && !onlyExecute // Can't sign or create a tx if not an owner
+  const cannotPropose = false //!isOwner && !onlyExecute // Can't sign or create a tx if not an owner
   const submitDisabled =
     !isSubmittable ||
     isEstimating ||

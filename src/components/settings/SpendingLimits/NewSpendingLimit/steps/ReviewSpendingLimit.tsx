@@ -119,7 +119,7 @@ export const ReviewSpendingLimit = ({ data, onSubmit }: Props) => {
   }
 
   return (
-    <SignOrExecuteForm safeTx={safeTx} onSubmit={onFormSubmit} error={safeTxError}>
+    <SignOrExecuteForm safeTx={safeTx} onSubmit={onFormSubmit as any} error={safeTxError}>
       {token && (
         <TokenTransferReview amount={data.amount} tokenInfo={token.tokenInfo}>
           {!!existingSpendingLimit && (

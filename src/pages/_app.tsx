@@ -22,12 +22,9 @@ import useTxPendingStatuses from '@/hooks/useTxPendingStatuses'
 import { useInitSession } from '@/hooks/useInitSession'
 import useStorageMigration from '@/services/ls-migration'
 import Notifications from '@/components/common/Notifications'
-import CookieBanner from '@/components/common/CookieBanner'
 import { useLightDarkTheme } from '@/hooks/useDarkMode'
 import { cgwDebugStorage } from '@/components/sidebar/DebugToggle'
 import { useTxTracking } from '@/hooks/useTxTracking'
-import useGtm from '@/services/analytics/useGtm'
-import useBeamer from '@/hooks/useBeamer'
 import ErrorBoundary from '@/components/common/ErrorBoundary'
 import createEmotionCache from '@/utils/createEmotionCache'
 import MetaTags from '@/components/common/MetaTags'
@@ -39,7 +36,7 @@ const InitApp = (): null => {
   setGatewayBaseUrl(GATEWAY_URL)
   usePathRewrite()
   useStorageMigration()
-  useGtm()
+  // useGtm()
   useInitSession()
   useLoadableStores()
   useInitOnboard()
@@ -49,7 +46,7 @@ const InitApp = (): null => {
   useSafeNotifications()
   useTxPendingStatuses()
   useTxTracking()
-  useBeamer()
+  // useBeamer()
 
   return null
 }
@@ -93,7 +90,7 @@ const WebCoreApp = ({ Component, pageProps, emotionCache = clientSideEmotionCach
             <Component {...pageProps} />
           </PageLayout>
 
-          <CookieBanner />
+          {/*<CookieBanner />*/}
 
           <Notifications />
         </AppProviders>

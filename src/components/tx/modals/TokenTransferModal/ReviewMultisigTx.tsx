@@ -26,7 +26,7 @@ const ReviewMultisigTx = ({ params, onSubmit }: ReviewTokenTxProps): ReactElemen
   }, [params, decimals, address])
 
   return (
-    <SignOrExecuteForm safeTx={safeTx} onSubmit={onSubmit} error={safeTxError}>
+    <SignOrExecuteForm safeTx={safeTx} onSubmit={onSubmit as any} error={safeTxError}>
       {token && <TokenTransferReview amount={params.amount} tokenInfo={token.tokenInfo} />}
 
       <SendFromBlock />

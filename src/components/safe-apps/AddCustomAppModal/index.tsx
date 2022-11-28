@@ -1,19 +1,7 @@
 import { useCallback } from 'react'
 import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
-import {
-  DialogActions,
-  DialogContent,
-  Typography,
-  Button,
-  TextField,
-  FormControlLabel,
-  Checkbox,
-  Link,
-  Box,
-  FormHelperText,
-} from '@mui/material'
-import CheckIcon from '@mui/icons-material/Check'
+import { Button, DialogActions, DialogContent, Link, TextField, Typography } from '@mui/material'
 import type { SafeAppData } from '@gnosis.pm/safe-react-gateway-sdk'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import ModalDialog from '@/components/common/ModalDialog'
@@ -24,9 +12,6 @@ import useDebounce from '@/hooks/useDebounce'
 import { fetchSafeAppFromManifest } from '@/services/safe-apps/manifest'
 import { SAFE_APPS_EVENTS, trackSafeAppEvent } from '@/services/analytics'
 import { isSameUrl, trimTrailingSlash } from '@/utils/url'
-import { AppRoutes } from '@/config/routes'
-import CustomAppPlaceholder from './CustomAppPlaceholder'
-import CustomApp from './CustomApp'
 
 import css from './styles.module.css'
 
@@ -87,9 +72,9 @@ export const AddCustomAppModal = ({ open, onClose, onSave, safeAppsList }: Props
     [safeAppsList],
   )
 
-  const shareUrl = `${window.location.origin}${AppRoutes.share.safeApp}?appUrl=${encodeURIComponent(
-    safeApp?.url || '',
-  )}&chain=${currentChain?.shortName}`
+  // const shareUrl = `${window.location.origin}${AppRoutes.share.safeApp}?appUrl=${encodeURIComponent(
+  //   safeApp?.url || '',
+  // )}&chain=${currentChain?.shortName}`
   const isSafeAppValid = isValid && safeApp
   const isCustomAppInTheDefaultList = errors?.appUrl?.type === 'alreadyExists'
 
@@ -113,40 +98,40 @@ export const AddCustomAppModal = ({ open, onClose, onSave, safeAppsList }: Props
                 },
               })}
             />
-            <Box mt={2}>
-              {safeApp ? (
-                <>
-                  <CustomApp safeApp={safeApp} shareUrl={isCustomAppInTheDefaultList ? shareUrl : ''} />
-                  {isCustomAppInTheDefaultList ? (
-                    <Box display="flex" mt={2} alignItems="center">
-                      <CheckIcon color="success" />
-                      <Typography ml={1}>This app is already registered</Typography>
-                    </Box>
-                  ) : (
-                    <>
-                      <FormControlLabel
-                        aria-required
-                        control={
-                          <Checkbox
-                            {...register('riskAcknowledgement', {
-                              required: true,
-                            })}
-                          />
-                        }
-                        label="This app is not part of Safe and I agree to use it at my own risk."
-                        sx={{ mt: 2 }}
-                      />
+            {/*<Box mt={2}>*/}
+            {/*  {safeApp ? (*/}
+            {/*    <>*/}
+            {/*      <CustomApp safeApp={safeApp} shareUrl={isCustomAppInTheDefaultList ? shareUrl : ''} />*/}
+            {/*      {isCustomAppInTheDefaultList ? (*/}
+            {/*        <Box display="flex" mt={2} alignItems="center">*/}
+            {/*          <CheckIcon color="success" />*/}
+            {/*          <Typography ml={1}>This app is already registered</Typography>*/}
+            {/*        </Box>*/}
+            {/*      ) : (*/}
+            {/*        <>*/}
+            {/*          <FormControlLabel*/}
+            {/*            aria-required*/}
+            {/*            control={*/}
+            {/*              <Checkbox*/}
+            {/*                {...register('riskAcknowledgement', {*/}
+            {/*                  required: true,*/}
+            {/*                })}*/}
+            {/*              />*/}
+            {/*            }*/}
+            {/*            label="This app is not part of Safe and I agree to use it at my own risk."*/}
+            {/*            sx={{ mt: 2 }}*/}
+            {/*          />*/}
 
-                      {errors.riskAcknowledgement && (
-                        <FormHelperText error>Accepting the disclaimer is mandatory</FormHelperText>
-                      )}
-                    </>
-                  )}
-                </>
-              ) : (
-                <CustomAppPlaceholder error={isValidURL(debouncedUrl) && manifestError ? MANIFEST_ERROR : ''} />
-              )}
-            </Box>
+            {/*          {errors.riskAcknowledgement && (*/}
+            {/*            <FormHelperText error>Accepting the disclaimer is mandatory</FormHelperText>*/}
+            {/*          )}*/}
+            {/*        </>*/}
+            {/*      )}*/}
+            {/*    </>*/}
+            {/*  ) : (*/}
+            {/*    <CustomAppPlaceholder error={isValidURL(debouncedUrl) && manifestError ? MANIFEST_ERROR : ''} />*/}
+            {/*  )}*/}
+            {/*</Box>*/}
           </div>
 
           <div className={css.addCustomAppHelp}>

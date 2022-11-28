@@ -4,11 +4,13 @@ import type { RootState } from '.'
 type SessionState = {
   lastChainId: string
   lastSafeAddress: { [chainId: string]: string }
+  executedTxs: { [txId: string]: string }
 }
 
 const initialState: SessionState = {
   lastChainId: '',
   lastSafeAddress: {},
+  executedTxs: {},
 }
 
 export const sessionSlice = createSlice({

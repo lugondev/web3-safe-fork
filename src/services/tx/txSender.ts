@@ -447,6 +447,6 @@ export const dispatchSpendingLimitTxExecution = async (
   return result?.hash
 }
 
-export const dispatchSafeAppsTx = (txId: string, safeAppRequestId: RequestId) => {
-  txDispatch(TxEvent.SAFE_APPS_REQUEST, { txId, safeAppRequestId })
+export const dispatchSafeAppsTx = (txId: string, safeAppRequestId: RequestId, txHash: string) => {
+  txDispatch(TxEvent.SAFE_APPS_REQUEST, { txId, safeAppRequestId, txHash })
 }

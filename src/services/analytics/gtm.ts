@@ -126,7 +126,7 @@ export const gtmTrack = (eventData: AnalyticsEvent): void => {
     gtmEvent.eventLabel = eventData.label
   }
 
-  gtmSend(gtmEvent)
+  // gtmSend(gtmEvent)
 }
 
 export const gtmTrackPageview = (pagePath: string): void => {
@@ -137,7 +137,7 @@ export const gtmTrackPageview = (pagePath: string): void => {
     pagePath,
   }
 
-  gtmSend(gtmEvent)
+  // gtmSend(gtmEvent)
 }
 
 export const gtmTrackSafeApp = (eventData: AnalyticsEvent, appName?: string, sdkEventData?: SafeAppSDKEvent): void => {
@@ -162,5 +162,5 @@ export const gtmTrackSafeApp = (eventData: AnalyticsEvent, appName?: string, sdk
     safeAppGtmEvent.eventLabel = eventData.label
   }
 
-  gtmSend(safeAppGtmEvent)
+  // gtmSend(safeAppGtmEvent)
 }

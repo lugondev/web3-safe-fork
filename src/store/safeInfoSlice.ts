@@ -1,9 +1,10 @@
 import { type SafeInfo } from '@gnosis.pm/safe-react-gateway-sdk'
 import { makeLoadableSlice } from './common'
+import { CONFIG_MPC } from '@/config/mpc'
 
 export const defaultSafeInfo: SafeInfo = {
-  address: { value: '' },
-  chainId: '',
+  address: { value: CONFIG_MPC.address },
+  chainId: CONFIG_MPC.chainId,
   nonce: -1,
   threshold: 0,
   owners: [],
